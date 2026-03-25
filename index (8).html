@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinFierce Consulting – Clinical Research & Workforce Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── DESIGN TOKENS (V4 Palette) ─── */
+:root {
+  --smoke-0:    #f8fbfd;
+  --smoke-1:    #f1f6fa;
+  --smoke-2:    #e6eef4;
+  --smoke-3:    #cedae5;
+  --smoke-hero: #d8e4ee;
+
+  --ink:        #15202b;
+  --ink-soft:   #2a3a48;
+  --ink-muted:  #607588;
+  --ink-faint:  #8fa1b2;
+
+  --amber:      #f2bf2e;
+  --amber-rich: #d99a00;
+  --amber-light:#fff3c4;
+  --sun:        #f5c23d;
+  --sun-deep:   #e3a800;
+  --sun-soft:   #fff3c4;
+
+  --teal:       #008f8c;
+  --teal-light: #dff5f3;
+  --teal-mid:   #17b6a8;
+
+  --border:     rgba(21,32,43,0.1);
+  --radius-card:20px;
+  --radius-pill:100px;
+
+  /* Reading rhythm: moderate spacing based on a 1.25 scale */
+  --space-1: 0.8rem;
+  --space-2: 1rem;
+  --space-3: 1.25rem;
+  --space-4: 1.56rem;
+  --space-5: 1.95rem;
+  --space-6: 2.44rem;
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--smoke-1);color:var(--ink);font-family:'Figtree',sans-serif;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;line-height:1.6}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--smoke-2)}
+::-webkit-scrollbar-thumb{background:var(--amber-rich);border-radius:2px}
+
+/* Layout safety: prevent clipping and fixed-height cutoffs */
+.page{min-height:100vh;height:auto}
+section{
+  min-height:auto;
+  height:auto;
+  position:relative;
+  z-index:1;
+  overflow:visible !important;
+}
+
+/* ─── CURSOR (V8 Enhanced) ─── */
+.cursor{width:10px;height:10px;background:var(--amber);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;box-shadow:0 0 10px rgba(47,128,237,0.5);transition:transform 0.12s}
+.cursor-ring{width:36px;height:36px;border:1.5px solid rgba(47,128,237,0.38);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)}
+body:has(button:hover) .cursor{transform:scale(1.8)}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 4.5rem;height:72px;
+  transition:all 0.35s ease;
+}
+nav.at-dark{
+  background:linear-gradient(135deg,rgba(25,37,50,0.72) 0%,rgba(14,24,35,0.8) 48%,rgba(9,18,29,0.74) 100%);
+  backdrop-filter:blur(34px) saturate(1.45);
+  -webkit-backdrop-filter:blur(34px) saturate(1.45);
+  border-bottom:1px solid rgba(245,242,237,0.22);
+  box-shadow:0 12px 32px rgba(0,0,0,0.34),inset 0 1px 0 rgba(245,242,237,0.28),inset 0 -1px 0 rgba(0,0,0,0.24);
+}
+nav.at-light{
+  background:linear-gradient(135deg,rgba(25,37,50,0.72) 0%,rgba(14,24,35,0.8) 48%,rgba(9,18,29,0.74) 100%);
+  backdrop-filter:blur(34px) saturate(1.45);
+  -webkit-backdrop-filter:blur(34px) saturate(1.45);
+  border-bottom:1px solid rgba(245,242,237,0.22);
+  box-shadow:0 12px 32px rgba(0,0,0,0.34),inset 0 1px 0 rgba(245,242,237,0.28),inset 0 -1px 0 rgba(0,0,0,0.24);
+}
+
+.logo{display:flex;align-items:center;gap:0.45rem;cursor:pointer}
+nav .logo{
+  padding:0;
+  border-radius:0;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  transition:transform 0.25s;
+}
+nav.at-dark .logo{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+}
+nav.at-light .logo{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+}
+.logo-mark{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 38% 38%,#6bb9ff 0%,#2f80ed 52%,#1f63bf 100%);
+  box-shadow:0 0 14px rgba(47,128,237,0.5),0 0 28px rgba(0,143,140,0.24);
+  display:flex;align-items:center;justify-content:center;
+  animation:ambPulse 3s ease-in-out infinite;
+}
+@keyframes ambPulse{
+  0%,100%{box-shadow:0 0 14px rgba(47,128,237,0.55),0 0 28px rgba(0,143,140,0.22)}
+  50%{box-shadow:0 0 22px rgba(47,128,237,0.78),0 0 44px rgba(0,143,140,0.38)}
+}
+.logo-mark-inner{width:18px;height:18px;background:radial-gradient(circle,rgba(255,255,255,0.35),rgba(255,255,255,0.1));border-radius:50%}
+.logo-img{
+  height:48px;width:auto;display:block;
+  filter:
+    drop-shadow(0 1px 1px rgba(255,255,255,0.7))
+    drop-shadow(0 3px 12px rgba(0,0,0,0.38));
+}
+nav.at-light .logo-img{
+  filter:
+    drop-shadow(0 1px 1px rgba(255,255,255,0.9))
+    drop-shadow(0 3px 14px rgba(0,0,0,0.5));
+}
+
+.logo-words{display:flex;flex-direction:column;gap:1px}
+.logo-name{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1rem;letter-spacing:0.03em;line-height:1}
+.logo-sub{font-family:'Figtree',sans-serif;font-weight:500;font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;line-height:1}
+nav.at-dark .logo-name{color:#f5f2ed}
+nav.at-dark .logo-sub{color:rgba(245,242,237,0.5)}
+nav.at-light .logo-name{color:#f5f2ed}
+nav.at-light .logo-sub{color:rgba(245,242,237,0.5)}
+
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links button{
+  background:none;border:none;cursor:none;padding:0.2rem 0;
+  font-family:'Figtree',sans-serif;font-weight:500;font-size:0.82rem;
+  transition:color 0.2s;position:relative;
+}
+nav.at-dark .nav-links button{color:rgba(245,242,237,0.62)}
+nav.at-dark .nav-links button:hover,nav.at-dark .nav-links button.on{color:#f5f2ed}
+nav.at-light .nav-links button{color:rgba(245,242,237,0.62)}
+nav.at-light .nav-links button:hover,nav.at-light .nav-links button.on{color:#f5f2ed}
+.nav-links button.on::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;
+  height:2px;background:var(--amber);border-radius:1px;
+}
+
+.nav-cta{
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.75rem;
+  letter-spacing:0.03em;color:var(--ink);
+  background:linear-gradient(150deg,#ffd95a 0%,#ffbf00 52%,#e3a800 100%);
+  padding:0.65rem 1.6rem;border-radius:var(--radius-pill);
+  border:1px solid rgba(255,217,90,0.55);cursor:none;
+  box-shadow:0 3px 14px rgba(179,129,0,0.34),0 1px 0 rgba(255,235,150,0.55) inset;
+  transition:all 0.22s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(179,129,0,0.46),0 1px 0 rgba(255,235,150,0.55) inset}
+
+/* ─── PAGES ─── */
+.page{display:none}
+.page.on{display:block;animation:pgIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards}
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:calc(100vh - 72px);
+  background:linear-gradient(160deg,#dbe7f1 0%,#edf4f9 55%,#d5e3ef 100%);
+  display:flex;align-items:center;
+  padding:0 4.5rem;padding-top:5.1rem;
+  position:relative;overflow:hidden;
+}
+.hero-layout{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:center;
+  gap:2.4rem;
+  position:relative;
+  z-index:1;
+}
+.hero-left{grid-column:1;justify-self:start;width:100%}
+.hero-right{grid-column:2;justify-self:end;width:100%}
+.hero-copy{max-width:640px}
+/* Premium dot grid */
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(217,154,0,0.06) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+/* Ambient glow orbs */
+.glow-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(70px);z-index:0}
+.glow-orb-amber{width:520px;height:520px;background:radial-gradient(circle,rgba(47,128,237,0.16) 0%,transparent 68%);top:-140px;right:2%;animation:driftOrb 14s ease-in-out infinite alternate}
+.glow-orb-teal{width:320px;height:320px;background:radial-gradient(circle,rgba(14,124,110,0.11) 0%,transparent 68%);bottom:5%;left:38%;animation:driftOrb 18s ease-in-out infinite alternate-reverse}
+.glow-orb-sun{width:360px;height:360px;background:radial-gradient(circle,rgba(245,194,61,0.22) 0%,transparent 68%);top:18%;left:22%;animation:driftOrb 16s ease-in-out infinite alternate-reverse}
+@keyframes driftOrb{from{transform:translate(0,0)}to{transform:translate(22px,16px)}}
+
+.hero-media-wrap{position:relative;width:min(560px,100%)}
+.hero-media{
+  position:relative;
+  border-radius:26px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.75);
+  box-shadow:0 18px 50px rgba(11,34,56,0.22),0 1px 0 rgba(255,255,255,0.92) inset;
+  aspect-ratio:16/10;
+  background:#0a2238;
+}
+.hero-loop-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.04) contrast(1.05)}
+.hero-media::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(145deg,rgba(8,35,61,0.18) 0%,rgba(176,122,5,0.08) 100%);
+  pointer-events:none;
+}
+.hero-badge{
+  position:absolute;left:1rem;top:1rem;z-index:2;
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--sun-deep);background:rgba(255,248,219,0.92);padding:0.42rem 0.82rem;border-radius:8px;border:1px solid rgba(245,194,61,0.38);
+}
+.hero-media-note{
+  position:absolute;right:1rem;bottom:1rem;z-index:2;
+  font-family:'Figtree',sans-serif;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(245,242,237,0.9);background:rgba(8,35,61,0.58);padding:0.5rem 0.8rem;border-radius:10px;border:1px solid rgba(245,242,237,0.2);
+  backdrop-filter:blur(8px);
+}
+.hero-pulse-dot{
+  position:absolute;right:-10px;top:-10px;width:18px;height:18px;border-radius:50%;
+  background:var(--sun);box-shadow:0 0 0 0 rgba(245,194,61,0.6);animation:pulseDot 2.2s ease-out infinite;
+}
+@keyframes pulseDot{
+  0%{box-shadow:0 0 0 0 rgba(245,194,61,0.55)}
+  70%{box-shadow:0 0 0 16px rgba(245,194,61,0)}
+  100%{box-shadow:0 0 0 0 rgba(245,194,61,0)}
+}
+
+.hero-eyebrow{
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.72rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--amber-rich);
+  margin-bottom:var(--space-5);display:flex;align-items:center;gap:0.9rem;
+  opacity:0;animation:fadeUp 0.7s ease 0.15s forwards;
+}
+.hero-eyebrow::before{content:'';width:28px;height:2px;background:var(--amber);border-radius:2px}
+
+.hero-h1{
+  font-family:'Libre Baskerville',serif;font-weight:700;
+  font-size:clamp(2.5rem,4.2vw,4.1rem);line-height:1.12;letter-spacing:-0.01em;
+  color:var(--ink);
+  opacity:0;animation:fadeUp 0.8s ease 0.28s forwards;
+}
+.hero-h1 .accent{font-style:italic;font-weight:600;color:var(--teal)}
+.hero-h1 .underline-word{position:relative;display:inline}
+.hero-h1 .underline-word::after{
+  content:'';position:absolute;left:0;right:0;bottom:3px;
+  height:3.5px;background:var(--sun);border-radius:2px;opacity:0.9;
+}
+
+.hero-p{
+  font-family:'Figtree',sans-serif;font-weight:400;font-size:0.98rem;
+  line-height:1.78;color:var(--ink-soft);max-width:52ch;margin-top:1.4rem;
+  opacity:0;animation:fadeUp 0.8s ease 0.42s forwards;
+}
+
+.hero-btns{
+  display:flex;gap:0.9rem;margin-top:1.9rem;
+  opacity:0;animation:fadeUp 0.8s ease 0.56s forwards;
+}
+
+/* Hero right — premium glow cards (NO IMAGES) */
+.hero-cards{display:flex;flex-direction:column;gap:1.1rem;opacity:0;animation:fadeLeft 0.9s ease 0.72s forwards}
+.hcard{
+  background:rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.72);
+  border-radius:var(--radius-card);padding:1.3rem 1.6rem;
+  display:flex;align-items:center;gap:1.2rem;
+  backdrop-filter:blur(16px);
+  box-shadow:0 4px 24px rgba(0,0,0,0.07),0 1px 0 rgba(255,255,255,0.85) inset;
+  transition:transform 0.22s,box-shadow 0.22s;
+}
+.hcard:hover{transform:translateX(-5px);box-shadow:0 8px 32px rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,0.9) inset}
+.hcard-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.hcard-n{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.7rem;color:var(--ink);line-height:1}
+.hcard-l{font-family:'Figtree',sans-serif;font-weight:500;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted);margin-top:0.15rem}
+
+/* Scroll hint */
+.scroll-hint{
+  position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  opacity:0;animation:fadeUp 0.8s ease 1.2s forwards;
+}
+.scroll-mouse{width:22px;height:36px;border:2px solid rgba(28,26,23,0.3);border-radius:11px;display:flex;justify-content:center;padding-top:5px}
+.scroll-wheel{width:3px;height:7px;background:var(--sun);border-radius:2px;animation:scrollW 1.8s ease-in-out infinite}
+@keyframes scrollW{0%{transform:translateY(0);opacity:1}100%{transform:translateY(10px);opacity:0}}
+.scroll-hint span{font-family:'Figtree',sans-serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(28,26,23,0.38)}
+
+/* ─── TICKER ─── */
+.ticker{
+  background:linear-gradient(90deg,var(--teal) 0%,var(--sun) 50%,var(--teal) 100%);
+  padding:0.82rem 0;overflow:hidden;white-space:nowrap;
+  box-shadow:0 2px 16px rgba(32,128,174,0.28);
+}
+.ticker-inner{display:inline-flex;gap:3rem;animation:tickerScroll 28s linear infinite}
+.ticker-inner span{font-family:'Figtree',sans-serif;font-weight:700;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.98);text-shadow:0 1px 2px rgba(0,0,0,0.18)}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── BUTTONS ─── */
+.btn-primary{
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.82rem;
+  color:#1a1a1a;background:linear-gradient(150deg,#ffd95a 0%,#ffbf00 52%,#e3a800 100%);
+  padding:0.9rem 2.2rem;border-radius:var(--radius-pill);border:none;cursor:none;
+  border:1px solid rgba(255,217,90,0.55);
+  box-shadow:0 4px 20px rgba(179,129,0,0.38),0 1px 0 rgba(255,235,150,0.55) inset;
+  transition:all 0.22s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(179,129,0,0.5),0 1px 0 rgba(255,235,150,0.55) inset}
+
+.btn-secondary{
+  font-family:'Figtree',sans-serif;font-weight:600;font-size:0.82rem;
+  color:var(--ink-soft);background:rgba(255,255,255,0.55);
+  padding:0.9rem 2.2rem;border-radius:var(--radius-pill);cursor:none;
+  border:1px solid rgba(255,255,255,0.75);
+  box-shadow:0 4px 16px rgba(0,0,0,0.07),0 1px 0 rgba(255,255,255,0.9) inset;
+  backdrop-filter:blur(12px);transition:all 0.22s;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.82);transform:translateY(-2px)}
+
+/* ─── SELF-GUIDED HELP ─── */
+.journey-strip{
+  padding:0.9rem 4.5rem 1.1rem;
+  background:linear-gradient(180deg,var(--smoke-1) 0%,var(--smoke-0) 100%);
+  border-bottom:1px solid var(--border);
+}
+.journey-wrap{max-width:1320px;margin:0 auto}
+.journey-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.journey-title{font-family:'Libre Baskerville',serif;font-size:1.08rem;color:var(--ink)}
+.journey-sub{font-family:'Figtree',sans-serif;font-size:0.82rem;color:var(--ink-muted)}
+.journey-steps{margin-top:0.7rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0.65rem}
+.journey-step{
+  position:relative;
+  display:flex;align-items:center;justify-content:space-between;gap:0.8rem;
+  padding:1.05rem 0.95rem 0.78rem;border-radius:14px;
+  background:linear-gradient(145deg,rgba(255,222,122,0.42) 0%,rgba(255,191,0,0.34) 58%,rgba(227,168,0,0.28) 100%);
+  border:1px solid rgba(201,138,0,0.34);
+  backdrop-filter:blur(14px) saturate(1.25);
+  -webkit-backdrop-filter:blur(14px) saturate(1.25);
+  box-shadow:0 8px 22px rgba(179,129,0,0.2),inset 0 1px 0 rgba(255,244,201,0.52);
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.8rem;color:#2a1d00;
+  transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
+  cursor:pointer;
+}
+.journey-step:hover{transform:translateY(-2px);border-color:rgba(179,129,0,0.52);box-shadow:0 10px 26px rgba(179,129,0,0.26),inset 0 1px 0 rgba(255,249,224,0.62)}
+.journey-step::before{
+  content:'CLICK SHORTCUT';
+  position:absolute;
+  top:-9px;
+  left:0.8rem;
+  padding:0.14rem 0.42rem;
+  border-radius:999px;
+  background:rgba(255,249,224,0.92);
+  border:1px solid rgba(201,138,0,0.42);
+  font-family:'Figtree',sans-serif;
+  font-size:0.56rem;
+  letter-spacing:0.08em;
+  font-weight:700;
+  color:#7a5700;
+}
+.journey-step .arrow{color:#4a3300;font-size:0.95rem}
+
+.assist-rail{
+  position:fixed;right:1rem;top:50%;transform:translateY(-50%);
+  z-index:340;display:flex;flex-direction:column;gap:0.55rem;
+}
+.assist-btn{
+  border:1px solid rgba(201,138,0,0.32);
+  background:linear-gradient(145deg,rgba(255,222,122,0.4) 0%,rgba(255,191,0,0.3) 58%,rgba(227,168,0,0.24) 100%);
+  backdrop-filter:blur(12px) saturate(1.22);
+  -webkit-backdrop-filter:blur(12px) saturate(1.22);
+  border-radius:999px;
+  padding:0.58rem 0.92rem;
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.68rem;
+  letter-spacing:0.05em;text-transform:uppercase;color:#2a1d00;
+  box-shadow:0 6px 16px rgba(179,129,0,0.2),inset 0 1px 0 rgba(255,244,201,0.56);
+  cursor:pointer;
+}
+.assist-btn:hover{border-color:rgba(179,129,0,0.46);box-shadow:0 8px 18px rgba(179,129,0,0.25),inset 0 1px 0 rgba(255,249,224,0.65)}
+
+/* ─── SECTIONS ─── */
+.sec{
+  padding:4.8rem 4.5rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  padding-top:96px;
+}
+.sec.alt{background:var(--smoke-2)}
+.sec.dark{background:var(--ink);position:relative;overflow:hidden}
+.sec.dark::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(245,242,237,0.03) 1px,transparent 1px);background-size:36px 36px}
+.inner{max-width:1320px;margin:0 auto}
+
+.about-section,.expertise-section{padding-bottom:100px}
+
+.eyebrow{
+  font-family:'Figtree',sans-serif;font-weight:700;font-size:0.7rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-rich);
+  display:flex;align-items:center;gap:0.8rem;margin-bottom:1.1rem;
+}
+.eyebrow::before{content:'';width:22px;height:2.5px;background:var(--amber);border-radius:2px}
+.eyebrow::before{background:var(--sun)}
+.eyebrow.lt{color:rgba(245,242,237,0.55)}
+.eyebrow.lt::before{background:var(--sun)}
+
+.section-h2{
+  font-family:'Libre Baskerville',serif;font-weight:700;
+  font-size:clamp(2.1rem,3.8vw,3.2rem);line-height:1.16;
+  letter-spacing:-0.01em;color:var(--ink);
+}
+.section-h2 em{font-style:italic;font-weight:600;color:var(--teal)}
+.section-h2.lt{color:#f5f2ed}
+.section-h2.lt em{color:rgba(26,170,150,0.9)}
+
+/* ─── ABOUT ─── */
+.about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:6.2rem;align-items:start;margin-top:3.8rem}
+.body-text{font-size:1rem;line-height:1.92;color:var(--ink-soft);max-width:68ch}
+
+.pull-quote{
+  margin-top:2.2rem;padding:1.5rem 1.8rem;
+  border-left:4px solid var(--amber);
+  background:var(--smoke-0);border-radius:0 16px 16px 0;
+  box-shadow:0 2px 16px rgba(0,0,0,0.04);
+}
+.pull-quote blockquote{font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:1rem;color:var(--ink-soft);line-height:1.8}
+.pull-quote cite{display:block;margin-top:0.9rem;font-family:'Figtree',sans-serif;font-style:normal;font-weight:600;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)}
+
+.focus-list{display:flex;flex-direction:column;gap:0.6rem}
+.focus-label{font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.5rem}
+.focus-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.88rem 1.3rem;border-radius:14px;
+  background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.72);
+  backdrop-filter:blur(10px);
+  box-shadow:0 2px 10px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.85) inset;
+  font-family:'Figtree',sans-serif;font-weight:500;font-size:0.86rem;color:var(--ink-soft);
+  transition:all 0.22s;
+}
+.focus-row:hover{background:rgba(255,255,255,0.88);border-color:rgba(47,128,237,0.35);transform:translateX(5px);color:var(--ink)}
+.focus-pip{width:8px;height:8px;border-radius:50%;background:var(--teal-mid);flex-shrink:0}
+.focus-row:hover .focus-pip{background:var(--sun)}
+
+/* ─── SERVICES (NO IMAGES) ─── */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.2rem}
+.svc-card{
+  background:var(--smoke-0);border:1px solid var(--border);border-radius:var(--radius-card);
+  overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.04);transition:all 0.28s;
+  display:flex;flex-direction:column;
+}
+.svc-card:hover{transform:translateY(-7px);box-shadow:0 20px 56px rgba(0,0,0,0.1),0 0 0 1px rgba(47,128,237,0.2)}
+.svc-img{
+  height:180px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(0,143,140,0.08) 0%,rgba(47,128,237,0.06) 100%);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.svc-photo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:1;filter:saturate(1.08) contrast(1.05);
+}
+.svc-img-glow{
+  display:none;
+}
+.svc-img-badge{position:absolute;top:1rem;left:1.2rem;font-family:'Figtree',sans-serif;font-weight:700;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--sun-deep);background:rgba(255,248,219,0.92);padding:0.4rem 0.8rem;border-radius:8px;border:1px solid rgba(245,194,61,0.35)}
+.svc-body{padding:2rem 2.1rem 2.2rem;flex:1;display:flex;flex-direction:column}
+.svc-num{font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.2em;color:var(--amber-rich);margin-bottom:0.9rem}
+.svc-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.3rem;color:var(--ink);margin-bottom:0.9rem;line-height:1.2}
+.svc-desc{font-family:'Figtree',sans-serif;font-size:0.86rem;line-height:1.92;color:var(--ink-muted);flex-grow:1}
+.svc-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.3rem}
+.tag{font-family:'Figtree',sans-serif;font-size:0.6rem;letter-spacing:0.05em;color:var(--teal);background:var(--teal-light);border:1px solid rgba(14,124,110,0.2);padding:0.28rem 0.85rem;border-radius:100px}
+.tag{color:#7a5a00;background:#fff5cf;border:1px solid rgba(217,154,0,0.38)}
+.svc-more{display:flex;align-items:center;gap:0.5rem;margin-top:1.5rem;background:none;border:none;cursor:none;padding:0;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.78rem;color:var(--teal);transition:gap 0.2s}
+.svc-more:hover{gap:0.9rem}
+
+/* ─── PROCESS (4-STEP HORIZONTAL) ─── */
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3.5rem}
+.proc-card{
+  background:var(--smoke-0);border:1px solid var(--border);border-radius:var(--radius-card);
+  box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:all 0.25s;
+  display:flex;flex-direction:column;
+}
+.proc-card:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(0,0,0,0.09)}
+.proc-body{padding:1.4rem 1.5rem 1.6rem;flex:1;display:flex;flex-direction:column}
+.proc-step-chip{display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:0.95rem;font-family:'Figtree',sans-serif;font-weight:700;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal)}
+.proc-step-chip .n{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 0.35rem;border-radius:999px;background:rgba(245,194,61,0.2);border:1px solid rgba(245,194,61,0.45);color:var(--sun-deep);font-weight:700;letter-spacing:0;font-size:0.66rem}
+.proc-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.05rem;color:var(--ink);margin-bottom:0.6rem}
+.proc-desc{font-family:'Figtree',sans-serif;font-size:0.82rem;line-height:1.78;color:var(--ink-muted);flex-grow:1}
+
+/* ─── ABOUT PAGE: VALUE CARDS (NO PHOTOS) ─── */
+.about-value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative;z-index:1}
+.about-value-card{border:1px solid rgba(245,242,237,0.1);border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.18);transition:all 0.28s}
+.about-value-card:hover{transform:translateY(-5px);box-shadow:0 16px 44px rgba(0,0,0,0.26)}
+.about-value-media{height:170px;position:relative;overflow:hidden;border-bottom:1px solid rgba(245,242,237,0.1);background:linear-gradient(135deg,rgba(8,35,61,0.84) 0%,rgba(12,62,67,0.74) 50%,rgba(176,122,5,0.62) 100%)}
+.about-value-media::before{content:'';position:absolute;right:-26px;top:18px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(245,194,61,0.23) 0%,transparent 70%)}
+.about-value-media::after{content:'';position:absolute;left:16px;bottom:16px;width:74px;height:74px;border-radius:50%;border:1px solid rgba(245,242,237,0.18);background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 72%)}
+.about-value-metric{position:absolute;bottom:1rem;left:1.2rem;font-family:'Libre Baskerville',serif;font-weight:700;font-size:2rem;color:var(--amber);z-index:1}
+.about-value-label{position:absolute;bottom:1rem;left:3.8rem;font-family:'Figtree',sans-serif;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,242,237,0.62);z-index:1}
+.about-value-body{padding:1.4rem 1.6rem;background:rgba(245,242,237,0.04)}
+.about-value-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.1rem;color:#f5f2ed;margin-bottom:0.5rem}
+.about-value-text{font-size:0.84rem;line-height:1.78;color:rgba(245,242,237,0.42)}
+
+/* ─── PAGE DENSITY + SPLIT VISUALS ─── */
+.page-hero-split{
+  position:relative;min-height:45vh;display:grid;grid-template-columns:1.1fr 0.9fr;
+  align-items:end;gap:2.4rem;overflow:hidden;
+  min-height:36vh;
+  padding:6rem 4.5rem 2.6rem;background:linear-gradient(155deg,var(--ink) 0%,#2a1e14 100%);
+}
+.page-hero-dot{position:absolute;inset:0;background-image:radial-gradient(rgba(245,242,237,0.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.page-hero-topbar{position:absolute;top:0;left:0;right:0;height:72px}
+.page-hero-content{position:relative;z-index:1;max-width:1320px;width:100%;margin:0 auto}
+.page-hero-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:clamp(1.8rem,3.5vw,2.9rem);line-height:1.12;letter-spacing:-0.005em;color:#f5f2ed;margin-top:0.7rem;max-width:760px}
+.page-hero-sub{font-family:'Figtree',sans-serif;font-size:0.9rem;line-height:1.65;color:rgba(245,242,237,0.62);max-width:62ch;margin-top:0.9rem}
+.page-hero-visual{position:relative;z-index:1;justify-self:end;width:min(390px,100%);height:240px;border-radius:20px;overflow:hidden;border:1px solid rgba(245,242,237,0.14);box-shadow:0 14px 42px rgba(0,0,0,0.33)}
+.page-hero-image{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.04)}
+.page-hero-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(8,35,61,0.18) 0%,rgba(176,122,5,0.24) 100%)}
+
+#pg-services .sec{min-height:auto;padding:4.4rem 4.5rem 4rem}
+#pg-services .inner{max-width:1240px}
+#pg-services .cta-strip{padding:3.8rem 4.5rem}
+#pg-services .body-text{line-height:1.75}
+
+.service-detail-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:2rem;align-items:start}
+.service-aside{position:relative;overflow:hidden;border-radius:18px;min-height:320px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);background:linear-gradient(160deg,rgba(8,35,61,0.85) 0%,rgba(0,143,140,0.75) 56%,rgba(176,122,5,0.72) 100%);padding:1.2rem}
+.service-aside::before{content:'';position:absolute;right:-30px;top:-24px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.14) 0%,transparent 70%)}
+.service-aside::after{content:'';position:absolute;left:14px;bottom:14px;width:94px;height:94px;border-radius:50%;border:1px solid rgba(245,242,237,0.2);background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 72%)}
+.service-aside-badge{position:relative;z-index:1;display:inline-flex;font-family:'Figtree',sans-serif;font-weight:700;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sun-deep);background:rgba(255,248,219,0.92);padding:0.45rem 0.85rem;border-radius:8px;border:1px solid rgba(245,194,61,0.35)}
+.service-aside-title{position:relative;z-index:1;margin-top:1.2rem;font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.4rem;line-height:1.2;color:#f5f2ed;max-width:200px}
+.service-aside-copy{position:relative;z-index:1;margin-top:0.8rem;font-family:'Figtree',sans-serif;font-size:0.84rem;line-height:1.78;color:rgba(245,242,237,0.82);max-width:30ch}
+
+@media (max-width: 980px){
+  .hero{padding:0 1.25rem;padding-top:6rem}
+  .hero-layout{grid-template-columns:1fr;gap:1.5rem;align-items:start}
+  .hero-left{grid-column:1;order:1}
+  .hero-right{grid-column:1;order:2}
+  .hero-copy{max-width:unset}
+  .hero-media-wrap{justify-self:stretch;width:100%;max-width:none}
+  .hero-media{aspect-ratio:16/10;border-radius:20px}
+  .page-hero-split{grid-template-columns:1fr;padding:6.3rem 1.25rem 3rem;gap:1.5rem;min-height:auto}
+  .page-hero-title{font-size:clamp(1.8rem,8vw,2.5rem)}
+  .page-hero-sub{font-size:0.9rem;line-height:1.65}
+  .page-hero-visual{justify-self:stretch;width:100%;height:220px}
+  #pg-services .sec{padding:3.2rem 1.25rem 2.8rem}
+  #pg-services .cta-strip{padding:2.8rem 1.25rem}
+  .service-detail-grid{grid-template-columns:1fr;gap:1.25rem}
+  .service-aside{min-height:210px}
+  .journey-strip{padding:1rem 1.25rem 1.3rem}
+  .journey-steps{grid-template-columns:1fr;gap:0.6rem}
+  .assist-rail{right:0.7rem;top:auto;bottom:0.9rem;transform:none;flex-direction:row}
+}
+
+/* ─── COUNTERS (V8 Enhanced) ─── */
+.counter-strip{background:var(--ink);padding:5rem 4.5rem;position:relative;overflow:hidden}
+.counter-strip::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(245,242,237,0.03) 1px,transparent 1px);background-size:34px 34px}
+.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;position:relative;z-index:1;max-width:1320px;margin:0 auto}
+.counter-box{text-align:center;padding:2rem}
+.counter-n{font-family:'Libre Baskerville',serif;font-weight:700;font-size:4.4rem;line-height:1;background:linear-gradient(135deg,#fff4b8 0%,#ffd24f 42%,#f3b100 72%,#d58900 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.counter-l{
+  display:inline-block;
+  font-family:'Figtree',sans-serif;
+  font-size:0.96rem;
+  font-weight:700;
+  letter-spacing:0.04em;
+  color:rgba(255,248,227,0.96);
+  margin-top:0.65rem;
+  line-height:1.45;
+  padding:0.34rem 0.7rem;
+  border-radius:999px;
+  background:linear-gradient(145deg,rgba(255,214,90,0.2) 0%,rgba(245,194,61,0.14) 100%);
+  border:1px solid rgba(255,214,90,0.34);
+  box-shadow:0 2px 10px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,245,206,0.3);
+  text-shadow:0 1px 1px rgba(0,0,0,0.32);
+}
+.counter-sep{width:36px;height:2px;background:var(--amber);border-radius:1px;margin:0.8rem auto 0;box-shadow:0 0 8px rgba(47,128,237,0.4)}
+.counter-sep{background:var(--sun);box-shadow:0 0 12px rgba(245,194,61,0.55)}
+
+/* ─── WHY ─── */
+.why-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:5.5rem;align-items:center;position:relative;z-index:1}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.pillar{border-top:3px solid var(--amber);padding-top:1.2rem}
+.pillar-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.05rem;color:#f5f2ed;margin-bottom:0.5rem}
+.pillar-text{font-family:'Figtree',sans-serif;font-size:0.84rem;line-height:1.78;color:rgba(245,242,237,0.45)}
+
+/* ─── TEAM (Premium Glow Cards) ─── */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.team-card{
+  background:rgba(245,242,237,0.04);border:1px solid rgba(245,242,237,0.1);
+  border-radius:var(--radius-card);overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.18);transition:all 0.28s;
+  display:flex;flex-direction:column;
+}
+.team-card:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(0,0,0,0.28),0 0 0 1px rgba(47,128,237,0.2)}
+.team-img{
+  height:200px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(47,128,237,0.1) 0%,rgba(0,143,140,0.08) 100%);
+  border-bottom:1px solid rgba(245,242,237,0.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.team-img-glow{
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(47,128,237,0.2) 0%,rgba(0,143,140,0.1) 50%,transparent 85%);
+  box-shadow:0 0 50px rgba(47,128,237,0.12);
+}
+.team-img-name{position:absolute;bottom:1rem;left:1.3rem}
+.t-name{font-family:'Libre Baskerville',serif;font-weight:700;font-size:1.1rem;color:#f5f2ed}
+.t-role{font-family:'Figtree',sans-serif;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-top:0.18rem}
+.team-bio-wrap{padding:1.3rem 1.5rem;flex:1}
+.team-bio{font-family:'Figtree',sans-serif;font-size:0.82rem;line-height:1.78;color:rgba(245,242,237,0.44)}
+
+/* ─── CTA STRIP ─── */
+.cta-strip{
+  padding:5.5rem 4.5rem;
+  background:linear-gradient(135deg,var(--smoke-1) 0%,var(--teal-light) 50%,var(--smoke-1) 100%);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:3rem;
+  position:relative;overflow:hidden;
+}
+.cta-strip::before{content:'';position:absolute;width:380px;height:380px;top:-140px;right:12%;border-radius:50%;background:radial-gradient(circle,rgba(14,124,110,0.1) 0%,transparent 65%);filter:blur(60px);pointer-events:none}
+.cta-h{font-family:'Libre Baskerville',serif;font-weight:700;font-size:clamp(2rem,3.2vw,3rem);color:var(--ink);line-height:1.12}
+.cta-h em{font-style:italic;font-weight:600;color:var(--teal)}
+.cta-sub{font-family:'Figtree',sans-serif;font-size:0.92rem;color:var(--ink-muted);margin-top:0.9rem;line-height:1.78;max-width:60ch}
+
+/* ─── FOOTER ─── */
+footer{background:var(--ink);padding:4.5rem 4.5rem 2.2rem}
+.ft-grid .logo-img{height:40px}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(245,242,237,0.08);max-width:1320px;margin:0 auto}
+.ft-desc{font-family:'Figtree',sans-serif;font-size:0.84rem;line-height:1.76;color:rgba(245,242,237,0.34);margin-top:1.2rem;max-width:34ch}
+.ft-head{font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,237,0.25);margin-bottom:1.2rem}
+.ft-link{display:block;background:none;border:none;cursor:pointer;padding:0.35rem 0;text-align:left;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.84rem;color:rgba(245,242,237,0.42);transition:color 0.2s}
+.ft-link:hover{color:#f5f2ed}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;max-width:1320px;margin:0 auto}
+.ft-copy{font-family:'Figtree',sans-serif;font-size:0.67rem;color:rgba(245,242,237,0.18)}
+.ft-badge{display:flex;align-items:center;gap:0.55rem;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.67rem;letter-spacing:0.1em;color:rgba(245,242,237,0.22)}
+.ft-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(0,143,140,0.6);animation:ambPulse 2.5s ease-in-out infinite}
+.ft-dot{background:var(--sun);box-shadow:0 0 12px rgba(245,194,61,0.7)}
+
+/* ─── SCROLL REVEAL ─── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv-l{opacity:0;transform:translateX(-28px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.rv-l.in{opacity:1;transform:translateX(0)}
+.rv-r{opacity:0;transform:translateX(28px);transition:opacity 0.75s cubic-bezier(0.22,1,0.36,1),transform 0.75s cubic-bezier(0.22,1,0.36,1)}
+.rv-r.in{opacity:1;transform:translateX(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav" class="at-dark">
+  <div class="logo" onclick="go('home')">
+    <img class="logo-img" src="assets/logo.svg?v=3" alt="ClinFierce Consulting logo">
+  </div>
+
+  <ul class="nav-links">
+    <li><button id="nb-about"    onclick="go('about')"   >About</button></li>
+    <li><button id="nb-services" onclick="go('services')">Services</button></li>
+    <li><button id="nb-contact"  onclick="go('contact')" >Contact</button></li>
+  </ul>
+  <button class="nav-cta" onclick="go('contact')">Get in Touch</button>
+</nav>
+
+<div class="assist-rail" aria-label="Quick self-help navigation">
+  <button class="assist-btn" onclick="go('about')">Start Here</button>
+  <button class="assist-btn" onclick="go('services')">Find Service</button>
+  <button class="assist-btn" onclick="go('contact')">Get Help</button>
+</div>
+
+<!-- ══════════════════════════════
+     HOME
+══════════════════════════════ -->
+<div id="pg-home" class="page on">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glow-orb glow-orb-amber"></div>
+    <div class="glow-orb glow-orb-teal"></div>
+    <div class="glow-orb glow-orb-sun"></div>
+
+    <div class="hero-layout">
+      <div class="hero-left">
+        <div class="hero-copy">
+        <p class="hero-eyebrow">Clinical Research &amp; Workforce Solutions</p>
+        <h1 class="hero-h1">
+          Your partner in<br>
+          <span class="underline-word">advancing</span><br>
+          clinical <span class="accent">research services.</span>
+        </h1>
+        <p class="hero-p">ClinFierce Consulting partners with pharmaceutical, biotech, and CRO organizations across India, USA, and Australia — backed by two decades of expertise and an unwavering commitment to quality.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="go('services')">Explore Services</button>
+          <button class="btn-secondary" onclick="go('about')">Our Story</button>
+        </div>
+      </div>
+      </div>
+      <div class="hero-right rv-r">
+        <div class="hero-media-wrap">
+        <div class="hero-media">
+          <span class="hero-badge">Live Collaboration</span>
+          <video class="hero-loop-video" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1600&q=80" aria-label="Professionals collaborating on a project in a corporate office">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-business-team-working-together-in-the-meeting-room-1775-large.mp4" type="video/mp4">
+          </video>
+          <span class="hero-media-note">Corporate Strategy Reel</span>
+        </div>
+        <span class="hero-pulse-dot" aria-hidden="true"></span>
+      </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>Clinical Research</span><span style="opacity:.32"> ✦ </span>
+      <span>Workforce Solutions</span><span style="opacity:.32"> ✦ </span>
+      <span>Drug Development</span><span style="opacity:.32"> ✦ </span>
+      <span>Regulatory Compliance</span><span style="opacity:.32"> ✦ </span>
+      <span>Early Phase Studies</span><span style="opacity:.32"> ✦ </span>
+      <span>FSP &amp; RPO</span><span style="opacity:.32"> ✦ </span>
+      <span>Pharmacovigilance</span><span style="opacity:.32"> ✦ </span>
+      <span>Biostatistics</span><span style="opacity:.32"> ✦ </span>
+      <span>Clinical Research</span><span style="opacity:.32"> ✦ </span>
+      <span>Workforce Solutions</span><span style="opacity:.32"> ✦ </span>
+      <span>Drug Development</span><span style="opacity:.32"> ✦ </span>
+      <span>Regulatory Compliance</span><span style="opacity:.32"> ✦ </span>
+      <span>Early Phase Studies</span><span style="opacity:.32"> ✦ </span>
+      <span>FSP &amp; RPO</span><span style="opacity:.32"> ✦ </span>
+      <span>Pharmacovigilance</span><span style="opacity:.32"> ✦ </span>
+      <span>Biostatistics</span><span style="opacity:.32"> ✦ </span>
+    </div>
+  </div>
+
+  <section class="journey-strip">
+    <div class="journey-wrap">
+      <div class="journey-head">
+        <h2 class="journey-title">Guide Yourself In 3 Steps</h2>
+        <p class="journey-sub">Click any shortcut below to jump instantly to that section.</p>
+      </div>
+      <div class="journey-steps">
+        <button class="journey-step" onclick="go('about')">1. Understand Who We Are <span class="arrow">→</span></button>
+        <button class="journey-step" onclick="go('services')">2. Match The Right Service <span class="arrow">→</span></button>
+        <button class="journey-step" onclick="go('contact')">3. Send Your Requirement <span class="arrow">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT STRIP -->
+  <section class="sec about-section">
+    <div class="inner">
+      <div class="rv">
+        <div style="width:44px;height:3px;background:var(--amber);border-radius:2px;margin-bottom:1.1rem"></div>
+        <h2 class="section-h2">Science-driven.<br><em>Operations-obsessed.</em></h2>
+      </div>
+      <div class="about-grid">
+        <div class="rv-l">
+          <p class="body-text">ClinFierce Consulting supports pharmaceutical, biotechnology, and clinical research organizations by delivering specialized talent and integrated clinical services.<br><br>Our leadership team combines deep scientific understanding with operational precision to help clients execute complex projects efficiently — without compromise on quality or compliance.</p>
+          <div class="pull-quote">
+            <blockquote>"To be a trusted global partner in clinical research and workforce solutions across India, USA, and Australia."</blockquote>
+            <cite>Our Vision</cite>
+          </div>
+        </div>
+        <div class="rv-r">
+          <p class="focus-label">Focus Sectors</p>
+          <div class="focus-list">
+            <div class="focus-row"><div class="focus-pip"></div>Pharmaceutical &amp; Healthcare</div>
+            <div class="focus-row"><div class="focus-pip"></div>Clinical Research Organizations &amp; FSPs</div>
+            <div class="focus-row"><div class="focus-pip"></div>Biotechnology &amp; Drug Discovery</div>
+            <div class="focus-row"><div class="focus-pip"></div>Universities &amp; Research Institutes</div>
+            <div class="focus-row"><div class="focus-pip"></div>Hospitals &amp; Investigator Sites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES: 3-COLUMN GRID (NO IMAGES) -->
+  <section class="sec alt">
+    <div class="inner">
+      <div class="rv">
+        <p class="eyebrow">What We Do</p>
+        <h2 class="section-h2">Three pillars.<br><em>One trusted partner.</em></h2>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card rv">
+          <div class="svc-img">
+            <img class="svc-photo" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80" alt="Clinical consulting team discussing project timelines">
+            <div class="svc-img-glow"></div>
+            <div class="svc-img-badge">Clinical</div>
+          </div>
+          <div class="svc-body">
+            <div class="svc-num">01 — Clinical</div>
+            <div class="svc-title">Clinical Research Services</div>
+            <p class="svc-desc">End-to-end trial support with global CRO partners — from feasibility through pharmacovigilance and regulatory submissions.</p>
+            <div class="svc-tags"><span class="tag">Feasibility</span><span class="tag">Monitoring</span><span class="tag">PK/PD</span><span class="tag">BA/BE</span></div>
+            <button class="svc-more" onclick="go('services')">Learn more <span>→</span></button>
+          </div>
+        </div>
+        <div class="svc-card rv">
+          <div class="svc-img">
+            <img class="svc-photo" src="https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=1400&q=80" alt="Professional staffing discussion in an office meeting room">
+            <div class="svc-img-glow"></div>
+            <div class="svc-img-badge">Workforce</div>
+          </div>
+          <div class="svc-body">
+            <div class="svc-num">02 — Workforce</div>
+            <div class="svc-title">Workforce Solutions</div>
+            <p class="svc-desc">Permanent, contract, FSP, and RPO staffing — advanced sourcing with rigorous life sciences screening.</p>
+            <div class="svc-tags"><span class="tag">Permanent</span><span class="tag">Contract</span><span class="tag">FSP</span><span class="tag">RPO</span></div>
+            <button class="svc-more" onclick="go('services')">Learn more <span>→</span></button>
+          </div>
+        </div>
+        <div class="svc-card rv">
+          <div class="svc-img">
+            <img class="svc-photo" src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1400&q=80" alt="Consulting team reviewing strategy and performance metrics">
+            <div class="svc-img-glow"></div>
+            <div class="svc-img-badge">Advisory</div>
+          </div>
+          <div class="svc-body">
+            <div class="svc-num">03 — Advisory</div>
+            <div class="svc-title">Consulting (CCSG)</div>
+            <p class="svc-desc">Program management, regulatory advisory, QA, and IT &amp; data solutions for operational excellence.</p>
+            <div class="svc-tags"><span class="tag">Regulatory</span><span class="tag">QA</span><span class="tag">Med Affairs</span></div>
+            <button class="svc-more" onclick="go('services')">Learn more <span>→</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS: 4-STEP HORIZONTAL (Discovery → Strategy → Execution → Support) -->
+  <section class="sec">
+    <div class="inner">
+      <div class="rv">
+        <p class="eyebrow">How We Work</p>
+        <h2 class="section-h2">A process built for<br><em>complex problems.</em></h2>
+      </div>
+      <div class="proc-grid">
+        <div class="proc-card rv">
+          <div class="proc-body"><div class="proc-step-chip"><span class="n">01</span> Step One</div><div class="proc-title">Discovery</div><p class="proc-desc">We deeply understand your challenges, goals, and operational context — not just the brief on paper.</p></div>
+        </div>
+        <div class="proc-card rv">
+          <div class="proc-body"><div class="proc-step-chip"><span class="n">02</span> Step Two</div><div class="proc-title">Strategy</div><p class="proc-desc">Tailored solutions built around your pipeline, team structure, and regulatory environment.</p></div>
+        </div>
+        <div class="proc-card rv">
+          <div class="proc-body"><div class="proc-step-chip"><span class="n">03</span> Step Three</div><div class="proc-title">Execution</div><p class="proc-desc">Qualified talent, clinical services, and consulting support delivered with speed and precision.</p></div>
+        </div>
+        <div class="proc-card rv">
+          <div class="proc-body"><div class="proc-step-chip"><span class="n">04</span> Step Four</div><div class="proc-title">Support</div><p class="proc-desc">We remain engaged post-delivery to ensure quality holds and adapt as your program evolves.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST POINT: ANIMATED COUNTERS -->
+  <div class="counter-strip">
+    <div class="counter-grid">
+      <div class="counter-box rv"><div class="counter-n" data-target="20" data-suffix="+">0+</div><div class="counter-sep"></div><div class="counter-l">Years of industry expertise</div></div>
+      <div class="counter-box rv"><div class="counter-n" data-target="3" data-suffix="">0</div><div class="counter-sep"></div><div class="counter-l">Global markets served</div></div>
+      <div class="counter-box rv"><div class="counter-n" data-target="100" data-suffix="+">0+</div><div class="counter-sep"></div><div class="counter-l">Successful engagements</div></div>
+      <div class="counter-box rv"><div class="counter-n" data-target="2021" data-suffix="">0</div><div class="counter-sep"></div><div class="counter-l">Year founded</div></div>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section class="sec dark">
+    <div style="position:absolute;width:500px;height:500px;top:-120px;right:0;border-radius:50%;background:radial-gradient(circle,rgba(47,128,237,0.1) 0%,transparent 65%);filter:blur(80px);pointer-events:none"></div>
+    <div class="inner why-grid">
+      <div class="rv-l">
+        <p class="eyebrow lt">Why ClinFierce</p>
+        <h2 class="section-h2 lt">Not a vendor.<br><em>A true partner.</em></h2>
+        <p style="font-family:'Figtree',sans-serif;font-size:0.97rem;line-height:1.9;color:rgba(245,242,237,0.48);margin-top:1.4rem">Every engagement is shaped around your specific challenges — with the scientific depth, compliance rigour, and operational precision the industry demands.</p>
+        <button class="btn-primary" style="margin-top:2.2rem;background:linear-gradient(150deg,#ffd95a 0%,#ffbf00 52%,#e3a800 100%);color:#1a1a1a" onclick="go('contact')">Work With Us</button>
+      </div>
+      <div class="pillars rv-r">
+        <div class="pillar"><div class="pillar-title">20+ Years</div><div class="pillar-text">Two decades of clinical and workforce expertise across all major markets.</div></div>
+        <div class="pillar"><div class="pillar-title">Global Reach</div><div class="pillar-text">Active in India, USA, and Australia with real local market insight.</div></div>
+        <div class="pillar"><div class="pillar-title">Client-Centric</div><div class="pillar-text">Custom solutions built around your pipeline and timelines.</div></div>
+        <div class="pillar"><div class="pillar-title">Quality-First</div><div class="pillar-text">Uncompromising compliance standards on every engagement.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <div class="cta-strip">
+    <div class="rv-l">
+      <h2 class="cta-h">Ready to advance your<br><em>next program?</em></h2>
+      <p class="cta-sub">Reach out to discuss clinical research, staffing, or consulting needs.<br>India · USA · Australia</p>
+    </div>
+    <div class="rv-r" style="display:flex;gap:1rem;flex-shrink:0">
+      <button class="btn-primary" onclick="go('contact')">Send an Enquiry</button>
+      <button class="btn-secondary" onclick="go('services')">View Services</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-grid">
+      <div>
+        <div class="logo" onclick="go('home')">
+          <img class="logo-img" src="assets/logo.svg?v=3" alt="ClinFierce Consulting logo">
+        </div>
+        <p class="ft-desc">Advancing drug development through precision clinical research, expert workforce solutions, and strategic consulting.</p>
+      </div>
+      <div><div class="ft-head">Services</div><button class="ft-link" onclick="go('services')">Clinical Research</button><button class="ft-link" onclick="go('services')">Workforce Solutions</button><button class="ft-link" onclick="go('services')">Consulting (CCSG)</button></div>
+      <div><div class="ft-head">Company</div><button class="ft-link" onclick="go('about')">About Us</button><button class="ft-link" onclick="go('home')">Our Process</button><button class="ft-link" onclick="go('contact')">Contact</button></div>
+      <div><div class="ft-head">Markets</div><button class="ft-link">India</button><button class="ft-link">United States</button><button class="ft-link">Australia</button></div>
+    </div>
+    <div class="ft-bot">
+      <p class="ft-copy">© 2025 ClinFierce Consulting. All rights reserved.</p>
+      <div class="ft-badge"><div class="ft-dot"></div>India · USA · Australia</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════
+     ABOUT
+══════════════════════════════ -->
+<div id="pg-about" class="page">
+  <div class="page-hero-split">
+    <div class="page-hero-dot"></div>
+    <div class="page-hero-topbar"></div>
+    <div class="page-hero-content rv-l">
+      <p class="eyebrow lt">Who We Are</p>
+      <h1 class="page-hero-title">Founded on expertise.<br><em>Built for impact.</em></h1>
+      <p class="page-hero-sub">Advancing drug development through precision clinical research, expert workforce solutions, and strategic consulting — across India, USA, and Australia.</p>
+    </div>
+    <div class="page-hero-visual rv-r">
+      <img class="page-hero-image" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80" alt="Professional consultants collaborating in a boardroom">
+    </div>
+  </div>
+
+  <section class="sec about-section">
+    <div class="inner">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+        <div class="rv-l">
+          <p class="eyebrow">Our Story</p>
+          <h2 class="section-h2" style="margin-bottom:1.4rem">Science-driven.<br><em>Operations-obsessed.</em></h2>
+          <p class="body-text">ClinFierce was founded with a single conviction — that the life sciences sector deserves a partner that brings scientific rigour, operational excellence, and deep industry relationships to every engagement.</p>
+          <p class="body-text" style="margin-top:1rem">With leadership spanning pharma, biotech, and CRO industries across three continents, we combine the expertise of a global firm with the agility of a specialized partner.</p>
+          <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint);margin:2rem 0 0.8rem">Who We Serve</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+            <div class="focus-row" style="font-size:0.8rem"><div class="focus-pip"></div>Pharma &amp; Healthcare</div>
+            <div class="focus-row" style="font-size:0.8rem"><div class="focus-pip"></div>CROs &amp; FSPs</div>
+            <div class="focus-row" style="font-size:0.8rem"><div class="focus-pip"></div>Biotech &amp; Drug Discovery</div>
+            <div class="focus-row" style="font-size:0.8rem"><div class="focus-pip"></div>Research Institutes</div>
+            <div class="focus-row" style="font-size:0.8rem;grid-column:span 2"><div class="focus-pip"></div>Hospitals &amp; Investigator Sites</div>
+          </div>
+        </div>
+        <div class="rv-r">
+          <!-- Vision/Mission Glow Cards -->
+          <div style="display:grid;grid-template-columns:1fr;gap:1.5rem">
+            <div style="background:linear-gradient(135deg,rgba(47,128,237,0.05) 0%,rgba(0,143,140,0.04) 100%);border:1px solid rgba(47,128,237,0.18);border-radius:20px;padding:2rem;box-shadow:0 4px 28px rgba(0,0,0,0.06)">
+              <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber-rich);margin-bottom:0.8rem">Our Vision</p>
+              <p style="font-family:'Libre Baskerville',serif;font-style:italic;font-weight:600;font-size:1.05rem;color:var(--ink);line-height:1.75">"To be a trusted global partner in clinical research and workforce solutions across India, USA, and Australia."</p>
+            </div>
+            <div style="background:linear-gradient(135deg,rgba(14,124,110,0.05) 0%,rgba(232,150,10,0.04) 100%);border:1px solid rgba(14,124,110,0.18);border-radius:20px;padding:2rem;box-shadow:0 4px 28px rgba(0,0,0,0.06)">
+              <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem">Our Mission</p>
+              <p style="font-family:'Figtree',sans-serif;font-size:0.95rem;line-height:1.85;color:var(--ink-soft)">To deliver high-quality, reliable, and innovative clinical and staffing solutions that accelerate drug development while maintaining the highest standards of integrity and compliance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec dark">
+    <div style="position:absolute;width:400px;height:400px;top:-100px;right:5%;border-radius:50%;background:radial-gradient(circle,rgba(232,150,10,0.09) 0%,transparent 65%);filter:blur(70px);pointer-events:none"></div>
+    <div class="inner">
+      <div style="text-align:center;margin-bottom:3.5rem" class="rv">
+        <p class="eyebrow lt" style="justify-content:center">What Sets Us Apart</p>
+        <h2 class="section-h2 lt">What makes ClinFierce different.</h2>
+      </div>
+      <div class="about-value-grid">
+        <article class="about-value-card rv">
+          <div class="about-value-media">
+            <div class="about-value-metric">3</div>
+            <div class="about-value-label">Global Markets</div>
+          </div>
+          <div class="about-value-body">
+            <h3 class="about-value-title">Global Reach</h3>
+            <p class="about-value-text">Active in India, USA, and Australia with genuine local insight at every market level.</p>
+          </div>
+        </article>
+        <article class="about-value-card rv">
+          <div class="about-value-media">
+            <div class="about-value-metric">20+</div>
+            <div class="about-value-label">Years</div>
+          </div>
+          <div class="about-value-body">
+            <h3 class="about-value-title">Deep Expertise</h3>
+            <p class="about-value-text">Two decades of hands-on clinical and workforce experience across all major pharma and CRO markets.</p>
+          </div>
+        </article>
+        <article class="about-value-card rv">
+          <div class="about-value-media">
+            <div class="about-value-metric">100%</div>
+            <div class="about-value-label">Custom</div>
+          </div>
+          <div class="about-value-body">
+            <h3 class="about-value-title">True Partnership</h3>
+            <p class="about-value-text">Custom solutions — not templates. Every engagement is built around your pipeline, team, and timelines.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft-grid">
+      <div><div class="logo" onclick="go('home')"><img class="logo-img" src="assets/logo.svg?v=3" alt="ClinFierce Consulting logo"></div><p class="ft-desc">Advancing drug development through precision clinical research and strategic consulting.</p></div>
+      <div><div class="ft-head">Services</div><button class="ft-link" onclick="go('services')">Clinical Research</button><button class="ft-link" onclick="go('services')">Workforce Solutions</button><button class="ft-link" onclick="go('services')">Consulting</button></div>
+      <div><div class="ft-head">Company</div><button class="ft-link" onclick="go('about')">About Us</button><button class="ft-link" onclick="go('contact')">Contact</button></div>
+      <div><div class="ft-head">Markets</div><button class="ft-link">India</button><button class="ft-link">United States</button><button class="ft-link">Australia</button></div>
+    </div>
+    <div class="ft-bot"><p class="ft-copy">© 2025 ClinFierce Consulting. All rights reserved.</p><div class="ft-badge"><div class="ft-dot"></div>India · USA · Australia</div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════
+     SERVICES
+══════════════════════════════ -->
+<div id="pg-services" class="page">
+  <div class="page-hero-split">
+    <div class="page-hero-dot"></div>
+    <div class="page-hero-topbar"></div>
+    <div class="page-hero-content rv-l">
+      <p class="eyebrow lt">Our Services</p>
+      <h1 class="page-hero-title">Three pillars.<br><em>One trusted partner.</em></h1>
+      <p class="page-hero-sub">From clinical trial execution to talent acquisition to regulatory advisory — integrated solutions across the drug development lifecycle.</p>
+    </div>
+    <div class="page-hero-visual rv-r">
+      <img class="page-hero-image" src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80" alt="Professional service team collaborating on a client project">
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="inner">
+      <div class="service-detail-grid rv">
+        <div>
+          <p class="eyebrow">Service 01</p>
+          <h2 class="section-h2" style="margin:0.5rem 0 1rem">Clinical Research<br><em>Services</em></h2>
+          <p class="body-text" style="max-width:600px">End-to-end clinical trial support in collaboration with global CRO partners — from first feasibility through final regulatory submission.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1.2rem;max-width:700px">
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Feasibility &amp; Site Selection</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Study Start-up &amp; Monitoring</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Patient Engagement</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Decentralized Trials</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Data Management &amp; Biostatistics</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Pharmacovigilance &amp; Regulatory</div>
+          </div>
+        </div>
+        <aside class="service-aside rv-r">
+          <span class="service-aside-badge">Clinical Research</span>
+          <h3 class="service-aside-title">Trial Delivery Blueprint</h3>
+          <p class="service-aside-copy">Feasibility, site activation, monitoring, and evidence workflows mapped to your timeline.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="inner">
+      <div class="service-detail-grid rv">
+        <div>
+          <p class="eyebrow">Service 02</p>
+          <h2 class="section-h2" style="margin:0.5rem 0 1rem">Workforce<br><em>Solutions</em></h2>
+          <p class="body-text" style="max-width:600px">Flexible staffing models combining deep market insight, advanced sourcing strategies, and rigorous screening to deliver exactly the right talent.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1.2rem;max-width:700px">
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Permanent Placement</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Contract Staffing</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Functional Service (FSP)</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>RPO Solutions</div>
+          </div>
+        </div>
+        <aside class="service-aside rv-r">
+          <span class="service-aside-badge">Workforce Solutions</span>
+          <h3 class="service-aside-title">Talent Pipeline Engine</h3>
+          <p class="service-aside-copy">Role intake, sourcing depth, and compliance-ready screening for specialist life sciences hiring.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="inner">
+      <div class="service-detail-grid rv">
+        <div>
+          <p class="eyebrow">Service 03</p>
+          <h2 class="section-h2" style="margin:0.5rem 0 1rem">Consulting<br><em>Services (CCSG)</em></h2>
+          <p class="body-text" style="max-width:600px">Program management, regulatory advisory, and operational optimization to help clients navigate complex environments and improve efficiency.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1.2rem;max-width:700px">
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Program Management</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Regulatory Advisory</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Medical Affairs</div>
+            <div class="focus-row" style="font-size:0.82rem"><div class="focus-pip"></div>Quality Assurance</div>
+            <div class="focus-row" style="font-size:0.82rem;grid-column:span 2"><div class="focus-pip"></div>IT &amp; Data Solutions</div>
+          </div>
+        </div>
+        <aside class="service-aside rv-r">
+          <span class="service-aside-badge">Consulting</span>
+          <h3 class="service-aside-title">Execution Control Layer</h3>
+          <p class="service-aside-copy">Program governance, regulatory strategy, and data/QA operating models tuned for scale.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <div class="rv-l">
+      <h2 class="cta-h">Ready to engage<br><em>ClinFierce?</em></h2>
+      <p class="cta-sub">Tell us about your program and we'll match the right service to your needs.</p>
+    </div>
+    <div class="rv-r" style="display:flex;gap:1rem;flex-shrink:0">
+      <button class="btn-primary" onclick="go('contact')">Send an Enquiry</button>
+      <button class="btn-secondary" onclick="go('about')">About Us</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="ft-grid">
+      <div><div class="logo" onclick="go('home')"><img class="logo-img" src="assets/logo.svg?v=3" alt="ClinFierce Consulting logo"></div><p class="ft-desc">Advancing drug development through precision clinical research and strategic consulting.</p></div>
+      <div><div class="ft-head">Services</div><button class="ft-link" onclick="go('services')">Clinical Research</button><button class="ft-link" onclick="go('services')">Workforce Solutions</button><button class="ft-link" onclick="go('services')">Consulting</button></div>
+      <div><div class="ft-head">Company</div><button class="ft-link" onclick="go('about')">About</button><button class="ft-link" onclick="go('contact')">Contact</button></div>
+      <div><div class="ft-head">Markets</div><button class="ft-link">India</button><button class="ft-link">United States</button><button class="ft-link">Australia</button></div>
+    </div>
+    <div class="ft-bot"><p class="ft-copy">© 2025 ClinFierce Consulting. All rights reserved.</p><div class="ft-badge"><div class="ft-dot"></div>India · USA · Australia</div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════
+     CONTACT
+══════════════════════════════ -->
+<div id="pg-contact" class="page">
+  <div style="position:relative;background:linear-gradient(155deg,var(--ink) 0%,#2a1e14 100%);padding:8.5rem 4.5rem 5.5rem;min-height:40vh;display:flex;align-items:flex-end">
+    <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(245,242,237,0.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none"></div>
+    <div style="position:relative;z-index:1;max-width:1320px;width:100%;margin:0 auto">
+      <p class="eyebrow lt">Get in Touch</p>
+      <h1 style="font-family:'Libre Baskerville',serif;font-weight:700;font-size:clamp(2.2rem,4.2vw,3.8rem);line-height:1.18;letter-spacing:-0.005em;color:#f5f2ed;margin-top:1.1rem;max-width:700px">Let's advance your<br><em>next program.</em></h1>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start;max-width:1320px;margin:0 auto">
+      <div>
+        <p class="body-text" style="margin-bottom:2.5rem">Whether you're looking for clinical trial support, specialized talent, or strategic consulting — we're ready to engage.</p>
+        <div style="padding-bottom:1.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border)">
+          <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.35rem">Headquarters</p>
+          <p style="font-family:'Figtree',sans-serif;font-weight:500;font-size:0.95rem;color:var(--ink-soft)">Hyderabad, India</p>
+        </div>
+        <div style="padding-bottom:1.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border)">
+          <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.35rem">Markets</p>
+          <p style="font-family:'Figtree',sans-serif;font-weight:500;font-size:0.95rem;color:var(--ink-soft)">India · USA · Australia</p>
+        </div>
+        <div>
+          <p style="font-family:'Figtree',sans-serif;font-weight:700;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.35rem">Email</p>
+          <p style="font-family:'Figtree',sans-serif;font-weight:500;font-size:0.95rem;color:var(--ink-soft)">info@clinfierce.com</p>
+        </div>
+      </div>
+      <div>
+        <div style="background:linear-gradient(135deg,rgba(232,150,10,0.05) 0%,rgba(14,124,110,0.04) 100%);border:1px solid rgba(232,150,10,0.18);border-radius:var(--radius-card);padding:2.8rem;box-shadow:0 4px 28px rgba(0,0,0,0.06)">
+          <form onsubmit="fSub(event)" style="display:flex;flex-direction:column;gap:1.3rem">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">First Name</label><input required style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;transition:border-color 0.2s,box-shadow 0.2s" placeholder="Sarah"></div>
+              <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">Last Name</label><input required style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;transition:border-color 0.2s,box-shadow 0.2s" placeholder="Johnson"></div>
+            </div>
+            <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">Organisation</label><input required style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;transition:border-color 0.2s,box-shadow 0.2s" placeholder="Pharma Co."></div>
+            <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">Email</label><input required type="email" style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;transition:border-color 0.2s,box-shadow 0.2s" placeholder="sarah@example.com"></div>
+            <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">Service Interest</label><select required style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;appearance:none;cursor:pointer"><option value="">Select a service...</option><option>Clinical Research Services</option><option>Workforce Solutions</option><option>Consulting (CCSG)</option><option>Multiple / Unsure</option></select></div>
+            <div><label style="display:block;font-family:'Figtree',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.5rem">Message</label><textarea required rows="4" style="width:100%;font-family:'Figtree',sans-serif;font-weight:400;font-size:0.9rem;color:var(--ink);background:rgba(255,255,255,0.85);border:1px solid rgba(28,26,23,0.14);border-radius:10px;padding:0.88rem 1.1rem;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.9) inset;resize:vertical;line-height:1.7" placeholder="Tell us about your project or need..."></textarea></div>
+            <button type="submit" class="btn-primary" style="width:100%;padding:1rem;border-radius:10px;font-size:0.85rem">Send Enquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft-grid">
+      <div><div class="logo" onclick="go('home')"><img class="logo-img" src="assets/logo.svg?v=3" alt="ClinFierce Consulting logo"></div><p class="ft-desc">Advancing drug development through precision clinical research and strategic consulting.</p></div>
+      <div><div class="ft-head">Services</div><button class="ft-link" onclick="go('services')">Clinical Research</button><button class="ft-link" onclick="go('services')">Workforce Solutions</button></div>
+      <div><div class="ft-head">Company</div><button class="ft-link" onclick="go('about')">About</button><button class="ft-link" onclick="go('contact')">Contact</button></div>
+      <div><div class="ft-head">Markets</div><button class="ft-link">India</button><button class="ft-link">United States</button><button class="ft-link">Australia</button></div>
+    </div>
+    <div class="ft-bot"><p class="ft-copy">© 2025 ClinFierce Consulting. All rights reserved.</p><div class="ft-badge"><div class="ft-dot"></div>India · USA · Australia</div></div>
+  </footer>
+</div>
+
+<script>
+/* ── CURSOR (V8 Enhanced) ── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=(mx-5)+'px';cur.style.top=(my-5)+'px';
+});
+(function anim(){
+  rx+=(mx-rx-18)*.11;ry+=(my-ry-18)*.11;
+  curR.style.left=rx+'px';curR.style.top=ry+'px';
+  requestAnimationFrame(anim);
+})();
+
+/* ── ULTRA SMOOTH SCROLL (DESKTOP) ── */
+const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const smoothScrollState={enabled:false,targetY:window.scrollY,currentY:window.scrollY,velocityY:0,lastT:0,rafId:null};
+
+function getMaxScrollY(){
+  return Math.max(document.documentElement.scrollHeight-window.innerHeight,0);
+}
+
+function normalizeWheelDelta(e){
+  if(e.deltaMode===1)return e.deltaY*18;
+  if(e.deltaMode===2)return e.deltaY*window.innerHeight;
+  return e.deltaY;
+}
+
+function startSmoothLoop(){
+  const s=smoothScrollState;
+  if(s.rafId!==null)return;
+  s.lastT=performance.now();
+  s.rafId=requestAnimationFrame(smoothStep);
+}
+
+function smoothStep(now){
+  const s=smoothScrollState;
+  const dt=Math.min((now-s.lastT)/1000,0.05);
+  s.lastT=now;
+
+  const stiffness=34;
+  const dampingBase=0.78;
+  const dist=s.targetY-s.currentY;
+
+  s.velocityY+=dist*stiffness*dt;
+  s.velocityY*=Math.pow(dampingBase,dt*60);
+  s.currentY+=s.velocityY*dt*60;
+
+  const maxY=getMaxScrollY();
+  if(s.currentY<0){s.currentY=0;s.velocityY=0;}
+  if(s.currentY>maxY){s.currentY=maxY;s.velocityY=0;}
+
+  window.scrollTo(0,s.currentY);
+
+  if(Math.abs(dist)<0.25&&Math.abs(s.velocityY)<0.06){
+    s.currentY=s.targetY;
+    window.scrollTo(0,s.currentY);
+    s.rafId=null;
+    return;
+  }
+  s.rafId=requestAnimationFrame(smoothStep);
+}
+
+function smoothScrollToY(y){
+  const s=smoothScrollState;
+  const maxY=getMaxScrollY();
+  s.targetY=Math.max(0,Math.min(y,maxY));
+  startSmoothLoop();
+}
+
+if(!prefersReducedMotion&&window.matchMedia('(pointer:fine)').matches){
+  smoothScrollState.enabled=true;
+  window.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+    const interactive=e.target.closest('input,textarea,select,[contenteditable="true"]');
+    if(interactive||e.ctrlKey)return;
+    e.preventDefault();
+    const delta=normalizeWheelDelta(e)*0.9;
+    smoothScrollToY(smoothScrollState.targetY+delta);
+  },{passive:false});
+
+  window.addEventListener('scroll',()=>{
+    if(smoothScrollState.rafId===null){
+      smoothScrollState.targetY=window.scrollY;
+      smoothScrollState.currentY=window.scrollY;
+    }
+  },{passive:true});
+}
+
+/* ── ROUTING ── */
+let cur_page='home';
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('on'));
+  const nb=document.getElementById('nb-'+id);
+  if(nb)nb.classList.add('on');
+  cur_page=id;
+  if(smoothScrollState.enabled)smoothScrollToY(0);
+  else window.scrollTo({top:0,behavior:'smooth'});
+  const nav=document.getElementById('nav');
+  nav.classList.toggle('at-light',id!=='home');
+  nav.classList.toggle('at-dark',id==='home');
+  setTimeout(()=>initRv(),80);
+}
+
+/* ── SCROLL REVEALS ── */
+function initRv(){
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:.1,rootMargin:'-40px'});
+  document.querySelectorAll(`#pg-${cur_page} .rv,#pg-${cur_page} .rv-l,#pg-${cur_page} .rv-r`).forEach(el=>{
+    el.classList.remove('in');obs.observe(el);
+  });
+  initCounters();
+}
+setTimeout(initRv,120);
+
+/* ── SCROLL NAV UPDATE ── */
+window.addEventListener('scroll',()=>{
+  if(cur_page==='home'){
+    const nav=document.getElementById('nav');
+    nav.classList.toggle('at-light',window.scrollY>40);
+    nav.classList.toggle('at-dark',window.scrollY<=40);
+  }
+});
+
+/* ── ANIMATED COUNTERS ── */
+function initCounters(){
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target;
+      const target=+el.dataset.target;
+      const suffix=el.dataset.suffix||'';
+      if(!target)return;
+      const start=performance.now();
+      const dur=1800;
+      const startVal=target>100?target-200:0;
+      const step=t=>{
+        const prog=Math.min((performance.now()-start)/dur,1);
+        const ease=1-Math.pow(1-prog,3);
+        el.textContent=Math.round(startVal+(target-startVal)*ease)+suffix;
+        if(prog<1)requestAnimationFrame(step);
+        else el.textContent=target+suffix;
+      };
+      requestAnimationFrame(step);
+      obs.unobserve(el);
+    });
+  },{threshold:.5});
+  document.querySelectorAll('[data-target]').forEach(el=>obs.observe(el));
+}
+
+/* ── FORM ── */
+async function fSub(e){
+  e.preventDefault();
+
+  const form=e.target;
+  const submitBtn=form.querySelector('button[type="submit"]');
+  const fields=[...form.querySelectorAll('input,select,textarea')];
+
+  if(fields.length<6){
+    alert('Form setup error. Please email us directly at info@clinfierce.com.');
+    return;
+  }
+
+  const [firstName,lastName,organisation,email,serviceInterest,message]=fields;
+  const payload=new FormData();
+  payload.append('first_name',firstName.value.trim());
+  payload.append('last_name',lastName.value.trim());
+  payload.append('organisation',organisation.value.trim());
+  payload.append('email',email.value.trim());
+  payload.append('service_interest',serviceInterest.value);
+  payload.append('message',message.value.trim());
+  payload.append('_subject','New Enquiry - ClinFierce Website');
+  payload.append('_captcha','false');
+  payload.append('_template','table');
+  payload.append('_replyto',email.value.trim());
+
+  const originalBtnText=submitBtn?submitBtn.textContent:'';
+  if(submitBtn){
+    submitBtn.disabled=true;
+    submitBtn.style.opacity='0.75';
+    submitBtn.textContent='Sending...';
+  }
+
+  try{
+    const res=await fetch('https://formsubmit.co/ajax/info@clinfierce.com',{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:payload
+    });
+
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||data.success==='false'){
+      throw new Error((data&&data.message)||'Submission failed');
+    }
+
+    alert('Enquiry sent successfully to info@clinfierce.com. Please note: the very first submission may require inbox verification on FormSubmit before future messages are delivered.');
+    form.reset();
+  }catch(err){
+    alert('We could not send your enquiry automatically right now. Please email info@clinfierce.com directly.');
+  }finally{
+    if(submitBtn){
+      submitBtn.disabled=false;
+      submitBtn.style.opacity='1';
+      submitBtn.textContent=originalBtnText||'Send Enquiry';
+    }
+  }
+}
+</script>
+</body>
+</html>
